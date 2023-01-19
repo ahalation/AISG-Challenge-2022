@@ -1,1 +1,1 @@
-# AISG-Challenge-2022
+# <AI Singapore> National AI Student Challenge 2022
