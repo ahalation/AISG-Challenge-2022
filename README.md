@@ -28,6 +28,7 @@ pipenv install
 #### 4. Test installation:
 ```
 pipenv shell
+cd test_pose
 peekingduck run
 ```
 
