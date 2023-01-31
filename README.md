@@ -12,7 +12,7 @@
 A tool that monitors the sitting posture of a subject positioned perpendicularly to a monitoring camera to estimate the user's sitting posture and alert when undesirable behaviour is detected (e.g. slouching)
 
 ## Installation
-#### 1. Install Python 3.9.12:
+#### 1. Install Python 3.9:
 https://www.python.org/downloads/release/python-3912/
 
 #### 2. Enter the model directory:
@@ -22,6 +22,7 @@ cd model
 
 #### 3. Install peekingduck via virtual environment:
 ```
+pipenv --python 3.9
 pipenv install
 ```
 
