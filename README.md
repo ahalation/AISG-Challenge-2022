@@ -12,17 +12,27 @@
 A tool that monitors the sitting posture of a subject positioned perpendicularly to a monitoring camera to estimate the user's sitting posture and alert when undesirable behaviour is detected (e.g. slouching)
 
 ## Installation
-#### 1. Install Python 3.9:
-https://www.python.org/downloads/release/python-3912/
+
+#### 1. Install Python 3.8:
+https://www.python.org/downloads/release/python-3810/
 
 #### 2. Enter the model directory:
 ``` 
 cd model
 ```
 
-#### 3. Install peekingduck via virtual environment:
+#### 3. Initiate virtual environment with Python 3.8:
 ```
-pipenv --python 3.9
+pipenv --python 3.8
+```
+
+#### (FOR MACOS ONLY)
+```
+pipenv install tensorflow-macos tensorflow-metal
+```
+
+#### 4. Install PeekingDuck:
+```
 pipenv install
 ```
 
@@ -32,4 +42,3 @@ pipenv shell
 cd test_pose
 peekingduck run
 ```
-
