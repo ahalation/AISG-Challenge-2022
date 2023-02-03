@@ -131,6 +131,8 @@ class Node(AbstractNode):
       left_ear = None
       left_shoulder = None
       left_hip = None
+      right_score = 0
+      left_score = 0
 
       if len(keypoints) > 0 and len(keypoint_scores) > 0:
          the_keypoints = keypoints[0]  # image only has one person
@@ -148,21 +150,27 @@ class Node(AbstractNode):
                   the_color = YELLOW
                elif i == KP_RIGHT_EAR:
                   right_ear = keypoints
+                  right_score += keypoint_score
                   the_color = YELLOW
                elif i == KP_RIGHT_SHOULDER:
                   right_shoulder = keypoints
+                  right_score += keypoint_score
                   the_color = YELLOW
                elif i == KP_RIGHT_HIP:
                   right_hip = keypoints
+                  right_score += keypoint_score
                   the_color = YELLOW
                elif i == KP_LEFT_EAR:
-                  right_ear = keypoints
+                  left_ear = keypoints
+                  left_score += keypoint_score
                   the_color = YELLOW
                elif i == KP_LEFT_SHOULDER:
-                  right_shoulder = keypoints
+                  left_shoulder = keypoints
+                  left_score += keypoint_score
                   the_color = YELLOW
                elif i == KP_LEFT_HIP:
-                  right_hip = keypoints
+                  left_hip = keypoints
+                  left_score += keypoint_score
                   the_color = YELLOW
                else:                   # generic keypoint
                   the_color = WHITE
@@ -171,6 +179,7 @@ class Node(AbstractNode):
 
       right = 0
       left = 0
+      watching = "NA"
       for i in [right_ear, right_shoulder, right_hip]:
          if i is not None:
             right += 1
@@ -178,14 +187,27 @@ class Node(AbstractNode):
          if i is not None:
             left += 1
 
-      if right >= left:
+      if right > left:
          ear = right_ear
          shoulder = right_shoulder
          hip = right_hip
-      else:
+         watching = "right"
+      elif left > right:
          ear = left_ear
          shoulder = left_shoulder
          hip = left_hip
+         watching = "left"
+      else:
+         if right_score >= left_score:
+            ear = right_ear
+            shoulder = right_shoulder
+            hip = right_hip
+            watching = "right"
+         else:
+            ear = left_ear
+            shoulder = left_shoulder
+            hip = left_hip
+            watching = "left"
 
       unit = None
       unit_str = "NA"
@@ -204,7 +226,17 @@ class Node(AbstractNode):
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
-         if left > right:
+
+         if left_shoulder is not None and right_shoulder is not None and hip is not None:
+            torso_h = ((left_shoulder[0]-right_shoulder[0])**2+(left_shoulder[1]-right_shoulder[1])**2)**0.5
+            if watching == "right":
+               torso_v = ((right_shoulder[0]-right_hip[0])**2+(right_shoulder[1]-right_hip[1])**2)**0.5
+            else:
+               torso_v = ((left_shoulder[0]-left_hip[0])**2+(left_shoulder[1]-left_hip[1])**2)**0.5
+            if torso_h >= torso_v/4:
+               draw_text(img, 8, 15, "Camera angle incorrect!", RED)
+
+         if watching == "left":
             unit = -unit
          unit_str = f"{unit}"
 
@@ -229,5 +261,6 @@ class Node(AbstractNode):
       draw_text(img, 8, 45, f"Nose-Ear {nose_ear}", YELLOW)
       draw_text(img, 8, 55, f"Ear-Shoulder {ear_shoulder}", YELLOW)
       draw_text(img, 8, 65, f"Shoulder-Hip {shoulder_hip}", YELLOW)
+      draw_text(img, 8, 75, f"Monitoring side: {watching} {left_score} {right_score}]", WHITE)
 
       return {}
