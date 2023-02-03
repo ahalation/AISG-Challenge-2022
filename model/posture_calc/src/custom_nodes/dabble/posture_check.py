@@ -16,6 +16,9 @@ KP_NOSE = 0                   # PoseNet's skeletal keypoints
 KP_RIGHT_EAR = 4
 KP_RIGHT_SHOULDER = 6         
 KP_RIGHT_HIP = 12
+KP_LEFT_EAR = 3
+KP_LEFT_SHOULDER = 5        
+KP_LEFT_HIP = 11
 
 
 def map_bbox_to_image_coords(
@@ -120,17 +123,19 @@ class Node(AbstractNode):
             thickness=1,
          )
 
-      # neck posture detection using a simple heuristic of tracking the
-      # right ear position relative to right shoulder
-      the_keypoints = None
+      # posture detection using a simple heuristic of tracking nose, ear, shoulder and hip relative position
       nose = None
       right_ear = None
       right_shoulder = None
       right_hip = None
+      left_ear = None
+      left_shoulder = None
+      left_hip = None
 
       if len(keypoints) > 0 and len(keypoint_scores) > 0:
          the_keypoints = keypoints[0]  # image only has one person
-         the_keypoint_scores = keypoint_scores[0]  # only one set of scores
+         the_keypoint_scores = keypoint_scores[0]
+            
          for i, keypoints in enumerate(the_keypoints):
             keypoint_score = the_keypoint_scores[i]
 
@@ -150,10 +155,37 @@ class Node(AbstractNode):
                elif i == KP_RIGHT_HIP:
                   right_hip = keypoints
                   the_color = YELLOW
+               elif i == KP_LEFT_EAR:
+                  right_ear = keypoints
+                  the_color = YELLOW
+               elif i == KP_LEFT_SHOULDER:
+                  right_shoulder = keypoints
+                  the_color = YELLOW
+               elif i == KP_LEFT_HIP:
+                  right_hip = keypoints
+                  the_color = YELLOW
                else:                   # generic keypoint
                   the_color = WHITE
 
                draw_text(img, x, y, x_y_str, the_color)
+
+      right = 0
+      left = 0
+      for i in [right_ear, right_shoulder, right_hip]:
+         if i is not None:
+            right += 1
+      for i in [left_ear, left_shoulder, left_hip]:
+         if i is not None:
+            left += 1
+
+      if right >= left:
+         ear = right_ear
+         shoulder = right_shoulder
+         hip = right_hip
+      else:
+         ear = left_ear
+         shoulder = left_shoulder
+         hip = left_hip
 
       unit = None
       unit_str = "NA"
@@ -162,33 +194,34 @@ class Node(AbstractNode):
       shoulder_hip = None
 
       if nose is None:
-         draw_text(img, 8, 2, "Nose not found!", RED)
-      if right_ear is None:
-         draw_text(img, 8, 10, "Ear not found!", RED)
-      if right_shoulder is None:
-         draw_text(img, 8, 18, "Shoulder not found!", RED)
-      if right_hip is None:
-         draw_text(img, 8, 26, "Hip not found!", RED)
+         draw_text(img, 8, 28, "Nose not found!", RED)
+      if ear is None:
+         draw_text(img, 8, 28, "Ear not found!", RED)
+      if shoulder is None:
+         draw_text(img, 8, 28, "Shoulder not found!", RED)
+      if hip is None:
+         draw_text(img, 8, 28, "Hip not found!", RED)
 
-      if right_shoulder is not None and right_hip is not None:
-         unit = ((right_ear[0]-right_shoulder[0])**2+(right_shoulder[1]-right_ear[1])**2)**0.5/10
+      if shoulder is not None and ear is not None:
+         unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
          unit_str = f"{unit}"
-         if right_shoulder[0]-right_hip[0] > -6*unit and right_shoulder[0]-right_hip[0] < 1*unit:
-            shoulder_hip = "Good"
-         else:
-            shoulder_hip = "Bad"
 
-         if nose is not None and right_ear is not None:
-            if abs(nose[1]-right_ear[1]) < 2*unit:
+         if ear[0]-shoulder[0] > -1*unit and ear[0]-shoulder[0] < 3*unit:
+            ear_shoulder = "Good"
+         else:
+            ear_shoulder = "Bad"
+
+         if hip is not None:
+            if shoulder[0]-hip[0] > -6*unit and shoulder[0]-hip[0] < 3*unit:
+               shoulder_hip = "Good"
+            else:
+               shoulder_hip = "Bad"
+
+         if nose is not None:
+            if abs(nose[1]-ear[1]) < 2*unit:
                nose_ear = "Good"
             else:
                nose_ear = "Bad"
-
-         if right_ear is not None and right_shoulder is not None:
-            if right_ear[0]-right_shoulder[0] > -1*unit and right_ear[0]-right_shoulder[0] < 3*unit:
-               ear_shoulder = "Good"
-            else:
-               ear_shoulder = "Bad"
 
       pos_str = f"Nose-Ear {nose_ear} / Ear-Shoulder {ear_shoulder} / Shoulder-Hip {shoulder_hip}"
       draw_text(img, 8, 44, unit_str, YELLOW)
