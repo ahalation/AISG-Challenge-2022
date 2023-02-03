@@ -11,7 +11,7 @@
 
 A tool that monitors the sitting posture of a subject positioned perpendicularly to a monitoring camera to estimate the user's sitting posture and alert when undesirable behaviour is detected (e.g. slouching)
 
-## Installation
+## Installation (Windows only)
 
 #### 1. Install Python 3.8:
 https://www.python.org/downloads/release/python-3810/
@@ -24,11 +24,6 @@ cd model
 #### 3. Initiate virtual environment with Python 3.8:
 ```
 pipenv --python 3.8
-```
-
-#### (FOR MACOS ONLY)
-```
-pipenv install tensorflow-macos tensorflow-metal
 ```
 
 #### 4. Install PeekingDuck:
