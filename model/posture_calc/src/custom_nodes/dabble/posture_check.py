@@ -204,6 +204,8 @@ class Node(AbstractNode):
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
+         if left > right:
+            unit = -unit
          unit_str = f"{unit}"
 
          if ear[0]-shoulder[0] > -1*unit and ear[0]-shoulder[0] < 3*unit:
@@ -218,7 +220,7 @@ class Node(AbstractNode):
                shoulder_hip = "Bad"
 
          if nose is not None:
-            if abs(nose[1]-ear[1]) < 2*unit:
+            if -(nose[1]-ear[1]) > -2*unit and -(nose[1]-ear[1]) < 2*unit:
                nose_ear = "Good"
             else:
                nose_ear = "Bad"
