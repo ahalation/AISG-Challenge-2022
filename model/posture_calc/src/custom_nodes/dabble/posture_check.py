@@ -194,13 +194,13 @@ class Node(AbstractNode):
       shoulder_hip = None
 
       if nose is None:
-         draw_text(img, 8, 28, "Nose not found!", RED)
+         draw_text(img, 8, 25, "Nose not found!", RED)
       if ear is None:
-         draw_text(img, 8, 28, "Ear not found!", RED)
+         draw_text(img, 8, 25, "Ear not found!", RED)
       if shoulder is None:
-         draw_text(img, 8, 28, "Shoulder not found!", RED)
+         draw_text(img, 8, 25, "Shoulder not found!", RED)
       if hip is None:
-         draw_text(img, 8, 28, "Hip not found!", RED)
+         draw_text(img, 8, 25, "Hip not found!", RED)
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
@@ -223,9 +223,9 @@ class Node(AbstractNode):
             else:
                nose_ear = "Bad"
 
-      draw_text(img, 8, 36, unit_str, YELLOW)
-      draw_text(img, 8, 44, f"Nose-Ear {nose_ear}", YELLOW)
-      draw_text(img, 8, 52, f"Ear-Shoulder {ear_shoulder}", YELLOW)
-      draw_text(img, 8, 60, f"Shoulder-Hip {shoulder_hip}", YELLOW)
+      draw_text(img, 8, 35, unit_str, YELLOW)
+      draw_text(img, 8, 45, f"Nose-Ear {nose_ear}", YELLOW)
+      draw_text(img, 8, 55, f"Ear-Shoulder {ear_shoulder}", YELLOW)
+      draw_text(img, 8, 65, f"Shoulder-Hip {shoulder_hip}", YELLOW)
 
       return {}
