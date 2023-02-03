@@ -1,8 +1,11 @@
 nodes:
 - input.visual:
-   source: posture_data/inspection
+    source: 0
 - custom_nodes.model.posture_classifier
-- output.csv_writer:
-   stats_to_track: ["filename", "pred_label", "pred_score"]
-   file_path: posture_predictions.csv
-   logging_interval: 0
+- draw.legend:
+    show: ["pred_label", "pred_score"]
+- output.screen
+# - output.csv_writer:
+#    stats_to_track: ["filename", "pred_label", "pred_score"]
+#    file_path: posture_predictions.csv
+#    logging_interval: 0

@@ -1,0 +1,6 @@
+input: ["img"]
+output: ["pred_label", "pred_score"]
+
+weights_parent_dir: weights
+class_label_map: {0: "bad", 1: "good"}
+threshold: 0.5

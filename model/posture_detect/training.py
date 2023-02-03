@@ -14,10 +14,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 
 # setup global constants
-DATA_DIR = "./castings_data"
+DATA_DIR = "./posture_data"
 WEIGHTS_DIR = "./weights"
 RESULTS = "training_results.png"
-EPOCHS = 10
+EPOCHS = 12
 BATCH_SIZE = 32
 IMG_HEIGHT = 180
 IMG_WIDTH = 180
