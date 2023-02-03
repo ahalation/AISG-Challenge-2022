@@ -76,7 +76,7 @@ def draw_text(img, x, y, text_str: str, color_code):
       text=text_str,
       org=(x, y),
       fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-      fontScale=0.3,
+      fontScale=0.4,
       color=color_code,
       thickness=1,
    )
@@ -223,8 +223,9 @@ class Node(AbstractNode):
             else:
                nose_ear = "Bad"
 
-      pos_str = f"Nose-Ear {nose_ear} / Ear-Shoulder {ear_shoulder} / Shoulder-Hip {shoulder_hip}"
-      draw_text(img, 8, 44, unit_str, YELLOW)
-      draw_text(img, 8, 36, pos_str, YELLOW)
+      draw_text(img, 8, 36, unit_str, YELLOW)
+      draw_text(img, 8, 44, f"Nose-Ear {nose_ear}", YELLOW)
+      draw_text(img, 8, 52, f"Ear-Shoulder {ear_shoulder}", YELLOW)
+      draw_text(img, 8, 60, f"Shoulder-Hip {shoulder_hip}", YELLOW)
 
       return {}
