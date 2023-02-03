@@ -1,6 +1,8 @@
 nodes:
 - input.visual:
-    source: https://storage.googleapis.com/peekingduck/videos/wave.mp4
-- model.posenet
-- draw.poses
-- output.screen
+   source: posture_data/inspection
+- custom_nodes.model.posture_classifier
+- output.csv_writer:
+   stats_to_track: ["filename", "pred_label", "pred_score"]
+   file_path: posture_predictions.csv
+   logging_interval: 0
