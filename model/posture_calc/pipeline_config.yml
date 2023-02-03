@@ -1,0 +1,8 @@
+nodes:
+- input.visual:
+    source: 0
+- model.yolo
+- model.posenet
+- custom_nodes.dabble.posture_check
+- draw.poses
+- output.screen
