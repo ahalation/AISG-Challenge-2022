@@ -285,7 +285,7 @@ class Node(AbstractNode):
             else:
                nose_ear = "Good"
 
-      draw_text(img, 1, 1, f"Time: {self.tick}", BLACK)
+      draw_text(img, 1, 1, f"Tick: {self.tick}", BLACK)
       draw_text(img, 12, 1, unit_str, YELLOW)
       draw_text(img, 1, 3, f"Nose-Ear {nose_ear} {nose_ear_dist}", BLACK)
       #draw_text(img, 1, 2, f"{nose_ear_dist}", YELLOW)
@@ -298,4 +298,10 @@ class Node(AbstractNode):
       draw_text(img, 1, 10, f"Too Forward: {self.back[0]} Too Backward: {self.back[1]}", BLACK)
       draw_text(img, 1, 11, f"Monitoring side: {watching}", BLACK)
 
-      return {}
+      return {"Tick": self.tick,
+      "Head Angle High": self.head[0],
+      "Head Angle Low": self.head[1],
+      "Neck Angle Forward": self.neck[0],
+      "Neck Angle Backward": self.neck[1],
+      "Back Angle Forward": self.back[0],
+      "Back Angle Forward": self.back[1]}
