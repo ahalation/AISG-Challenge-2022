@@ -239,22 +239,28 @@ class Node(AbstractNode):
             unit = -unit
          unit_str = f"{unit}"
 
-         if ear[0]-shoulder[0] > -1*unit and ear[0]-shoulder[0] < 3*unit:
-            ear_shoulder = "Good"
+         if ear[0]-shoulder[0] < -1*unit:
+            ear_shoulder = "Bend neck forward!"
+         elif ear[0]-shoulder[0] > 3*unit:
+            ear_shoulder = "Bend neck backward!"
          else:
-            ear_shoulder = "Bad"
+            ear_shoulder = "Good"
 
          if hip is not None:
-            if shoulder[0]-hip[0] > -6*unit and shoulder[0]-hip[0] < 3*unit:
-               shoulder_hip = "Good"
+            if shoulder[0]-hip[0] < -8*unit:
+               shoulder_hip = "Sit forward!"
+            elif shoulder[0]-hip[0] > 6*unit:
+               shoulder_hip = "Sit backward!"
             else:
-               shoulder_hip = "Bad"
+               shoulder_hip = "Good"
 
          if nose is not None:
-            if -(nose[1]-ear[1]) > -2*unit and -(nose[1]-ear[1]) < 2*unit:
-               nose_ear = "Good"
+            if -(nose[1]-ear[1]) < -3*unit:
+               nose_ear = "Tilt head up!"
+            elif -(nose[1]-ear[1]) > 2*unit:
+               nose_ear = "Tilt head down!"
             else:
-               nose_ear = "Bad"
+               nose_ear = "Good"
 
       draw_text(img, 1, 1, unit_str, YELLOW)
       draw_text(img, 1, 2, f"Nose-Ear {nose_ear}", YELLOW)
