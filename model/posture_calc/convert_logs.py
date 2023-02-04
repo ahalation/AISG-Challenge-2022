@@ -41,12 +41,12 @@ for f in os.listdir(log):
                 txt.write(f"Estimated valid capture time: {tock_s}s\n\n")
                 head_high, head_low, neck_fore, neck_back, back_fore, back_back = int(last[3]), int(last[4]), int(last[5]), int(last[6]), int(last[7]), int(last[8])
                 txt.write("Time Spent with:\n")
-                txt.write(f"Head tilted too high - {head_high*tick_s}s\n")
-                txt.write(f"Head tilted too low - {head_low*tick_s}s\n")
-                txt.write(f"Neck bent too forward - {neck_fore*tick_s}s\n")
-                txt.write(f"Neck bent too backward - {neck_back*tick_s}s\n")
-                txt.write(f"Back bent too forward - {back_fore*tick_s}s\n")
-                txt.write(f"Back bent too backward - {back_back*tick_s}s\n\n")
+                txt.write(f"Head tilted too high - {round(head_high*tick_s,4)}s\n")
+                txt.write(f"Head tilted too low - {round(head_low*tick_s,4)}s\n")
+                txt.write(f"Neck bent too forward - {round(neck_fore*tick_s,4)}s\n")
+                txt.write(f"Neck bent too backward - {round(neck_back*tick_s,4)}s\n")
+                txt.write(f"Back bent too forward - {round(back_fore*tick_s,4)}s\n")
+                txt.write(f"Back bent too backward - {round(back_back*tick_s,4)}s\n\n")
                 txt.write("Evaluation:\n")
                 worried = False
                 if head_high > worry or head_low > worry:

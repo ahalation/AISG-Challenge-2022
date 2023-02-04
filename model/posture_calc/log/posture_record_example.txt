@@ -1,0 +1,15 @@
+Time elapsed: 71s
+Estimated valid capture time: 40.3072s
+
+Time Spent with:
+Head tilted too high - 0.1504s
+Head tilted too low - 4.9632s
+Neck bent too forward - 7.0688s
+Neck bent too backward - 4.8128s
+Back bent too forward - 3.4592s
+Back bent too backward - 26.7712s
+
+Evaluation:
+Consider working on straightening your back!
+
+Please note this is not a certified medical tool and should only be used as a general guideline.
