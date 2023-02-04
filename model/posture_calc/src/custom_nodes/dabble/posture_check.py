@@ -75,9 +75,9 @@ def draw_text(img, x, y, text_str: str, color_code):
    cv2.putText(
       img=img,
       text=text_str,
-      org=(8*x, 24*y),
+      org=(10*x, 18*y),
       fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-      fontScale=0.8,
+      fontScale=0.6,
       color=color_code,
       thickness=2,
    )
@@ -89,7 +89,9 @@ class Node(AbstractNode):
       super().__init__(config, node_path=__name__, **kwargs)
       # setup object working variables
       self.tick = 0
-
+      self.head = [0,0] #tilt upward, tilt downward
+      self.neck = [0,0] #neck forward, neck backward
+      self.back = [0,0] #lean forward, lean backward
 
    def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
       """This node draws keypoints and checks posture.
@@ -126,7 +128,7 @@ class Node(AbstractNode):
             text=score_str,
             org=(x1, y2 - 30),            # offset by 30 pixels
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.3,
+            fontScale=0.5,
             color=WHITE,
             thickness=1,
          )
@@ -222,15 +224,18 @@ class Node(AbstractNode):
       nose_ear = None
       ear_shoulder = None
       shoulder_hip = None
+      nose_ear_dist = None
+      ear_shoulder_dist = None
+      shoulder_hip_dist = None
 
       if nose is None:
-         draw_text(img, 1, 6, "Nose not found!", RED)
+         draw_text(img, 1, 13, "Nose not found!", RED)
       if ear is None:
-         draw_text(img, 1, 7, "Ear not found!", RED)
+         draw_text(img, 1, 14, "Ear not found!", RED)
       if shoulder is None:
-         draw_text(img, 1, 8, "Shoulder not found!", RED)
+         draw_text(img, 1, 15, "Shoulder not found!", RED)
       if hip is None:
-         draw_text(img, 1, 9, "Hip not found!", RED)
+         draw_text(img, 1, 16, "Hip not found!", RED)
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
@@ -242,40 +247,55 @@ class Node(AbstractNode):
             else:
                torso_v = ((left_shoulder[0]-left_hip[0])**2+(left_shoulder[1]-left_hip[1])**2)**0.5
             if torso_h >= torso_v/4:
-               draw_text(img, 8, 10, "Camera angle incorrect!", RED)
+               draw_text(img, 1, 12, "Camera angle incorrect!", RED)
 
          if watching == "left":
             unit = -unit
-         unit_str = f"{unit}"
+         unit_str = f"{round(unit, 4)}"
 
-         if ear[0]-shoulder[0] < -1*unit:
-            ear_shoulder = "Bend neck forward!"
-         elif ear[0]-shoulder[0] > 2*unit:
+         ear_shoulder_dist = round(ear[0]-shoulder[0], 4)
+         if ear_shoulder_dist > 1.5*unit:
             ear_shoulder = "Bend neck backward!"
+            self.neck[0] += 1
+         elif ear_shoulder_dist < -1*unit:
+            ear_shoulder = "Bend neck forward!"
+            self.neck[1] += 1
          else:
             ear_shoulder = "Good"
 
          if hip is not None:
-            if shoulder[0]-hip[0] < -8*unit:
-               shoulder_hip = "Sit forward!"
-            elif shoulder[0]-hip[0] > 6*unit:
+            shoulder_hip_dist = round(shoulder[0]-hip[0], 4)
+            if shoulder_hip_dist > 2*unit:
                shoulder_hip = "Sit backward!"
+               self.back[0] += 1
+            elif shoulder_hip_dist < -3*unit:
+               shoulder_hip = "Sit forward!"
+               self.back[1] += 1
             else:
                shoulder_hip = "Good"
 
          if nose is not None:
-            if nose[1]-ear[1] > 2*unit:
-               nose_ear = "Tilt head up!"
-            elif nose[1]-ear[1] < 2*unit:
+            nose_ear_dist = round(-(nose[1]-ear[1]), 4)
+            if nose_ear_dist > 1.5*unit:
                nose_ear = "Tilt head down!"
+               self.head[0] += 1
+            elif nose_ear_dist < -1.5*unit:
+               nose_ear = "Tilt head up!"
+               self.head[1] += 1
             else:
                nose_ear = "Good"
 
-      draw_text(img, 1, 1, unit_str, YELLOW)
-      draw_text(img, 1, 2, f"Nose-Ear {nose_ear}", YELLOW)
-      draw_text(img, 1, 3, f"Ear-Shoulder {ear_shoulder}", YELLOW)
-      draw_text(img, 1, 4, f"Shoulder-Hip {shoulder_hip}", YELLOW)
-      draw_text(img, 1, 5, f"Monitoring side: {watching}", YELLOW)
-      draw_text(img, 1, 6, f"Time: {self.tick}", BLACK)
+      draw_text(img, 1, 1, f"Time: {self.tick}", BLACK)
+      draw_text(img, 12, 1, unit_str, YELLOW)
+      draw_text(img, 1, 3, f"Nose-Ear {nose_ear} {nose_ear_dist}", BLACK)
+      #draw_text(img, 1, 2, f"{nose_ear_dist}", YELLOW)
+      draw_text(img, 1, 4, f"Too High: {self.head[0]} Too Low: {self.head[1]}", BLACK)
+      draw_text(img, 1, 6, f"Ear-Shoulder {ear_shoulder}", BLACK)
+      #draw_text(img, 1, 5, f"{ear_shoulder_dist}", YELLOW)
+      draw_text(img, 1, 7, f"Too Forward: {self.neck[0]} Too Backward: {self.neck[1]}", BLACK)
+      draw_text(img, 1, 9, f"Shoulder-Hip {shoulder_hip}", BLACK)
+      #draw_text(img, 1, 8, f"{shoulder_hip_dist}", YELLOW)
+      draw_text(img, 1, 10, f"Too Forward: {self.back[0]} Too Backward: {self.back[1]}", BLACK)
+      draw_text(img, 1, 11, f"Monitoring side: {watching}", BLACK)
 
       return {}
