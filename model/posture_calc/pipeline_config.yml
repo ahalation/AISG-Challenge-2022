@@ -7,6 +7,6 @@ nodes:
 - draw.poses
 - output.screen
 - output.csv_writer:
-    stats_to_track: ["Tick", "Head Angle High", "Head Angle Low", "Neck Angle Forward", "Neck Angle Backward", "Back Angle Forward", "Back Angle Forward"]
-    file_path: "posture_record.csv"
+    stats_to_track: ["Tick", "Tock", "Head Angle High", "Head Angle Low", "Neck Angle Forward", "Neck Angle Backward", "Back Angle Forward", "Back Angle Backward"]
+    file_path: "log/posture_record.csv"
     logging_interval: 10

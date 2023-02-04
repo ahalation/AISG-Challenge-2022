@@ -1,2 +1,2 @@
 input: ["img", "bboxes", "bbox_scores", "keypoints", "keypoint_scores"]
-output: ["Time", "Head Angle High", "Head Angle Low", "Neck Angle Forward", "Neck Angle Backward", "Back Angle Forward", "Back Angle Forward"]
+output: ["Tick", "Tock", "Head Angle High", "Head Angle Low", "Neck Angle Forward", "Neck Angle Backward", "Back Angle Forward", "Back Angle Forward"]

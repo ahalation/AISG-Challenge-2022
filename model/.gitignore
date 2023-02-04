@@ -1,2 +1,3 @@
+*.pyc
 posture_data/
-posture_calc/*csv
+#posture_calc/log/

@@ -89,6 +89,7 @@ class Node(AbstractNode):
       super().__init__(config, node_path=__name__, **kwargs)
       # setup object working variables
       self.tick = 0
+      self.tock = 0
       self.head = [0,0] #tilt upward, tilt downward
       self.neck = [0,0] #neck forward, neck backward
       self.back = [0,0] #lean forward, lean backward
@@ -112,8 +113,6 @@ class Node(AbstractNode):
       keypoint_scores = inputs["keypoint_scores"]
 
       img_size = (img.shape[1], img.shape[0])  # image width, height
-
-      self.tick += 1
 
       # get bounding box confidence score and draw it at the
       # left-bottom (x1, y2) corner of the bounding box (offset by 30 pixels)
@@ -227,15 +226,20 @@ class Node(AbstractNode):
       nose_ear_dist = None
       ear_shoulder_dist = None
       shoulder_hip_dist = None
+      errored = False
 
       if nose is None:
          draw_text(img, 1, 13, "Nose not found!", RED)
+         errored = True
       if ear is None:
          draw_text(img, 1, 14, "Ear not found!", RED)
+         errored = True
       if shoulder is None:
          draw_text(img, 1, 15, "Shoulder not found!", RED)
+         errored = True
       if hip is None:
          draw_text(img, 1, 16, "Hip not found!", RED)
+         errored = True
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
@@ -248,6 +252,7 @@ class Node(AbstractNode):
                torso_v = ((left_shoulder[0]-left_hip[0])**2+(left_shoulder[1]-left_hip[1])**2)**0.5
             if torso_h >= torso_v/4:
                draw_text(img, 1, 12, "Camera angle incorrect!", RED)
+               errored = True
 
          if watching == "left":
             unit = -unit
@@ -256,10 +261,12 @@ class Node(AbstractNode):
          ear_shoulder_dist = round(ear[0]-shoulder[0], 4)
          if ear_shoulder_dist > 1.5*unit:
             ear_shoulder = "Bend neck backward!"
-            self.neck[0] += 1
+            if errored == False:
+               self.neck[0] += 1
          elif ear_shoulder_dist < -1*unit:
             ear_shoulder = "Bend neck forward!"
-            self.neck[1] += 1
+            if errored == False:
+               self.neck[1] += 1
          else:
             ear_shoulder = "Good"
 
@@ -267,27 +274,35 @@ class Node(AbstractNode):
             shoulder_hip_dist = round(shoulder[0]-hip[0], 4)
             if shoulder_hip_dist > 2*unit:
                shoulder_hip = "Sit backward!"
-               self.back[0] += 1
+               if errored == False:
+                  self.back[0] += 1
             elif shoulder_hip_dist < -3*unit:
                shoulder_hip = "Sit forward!"
-               self.back[1] += 1
+               if errored == False:
+                  self.back[1] += 1
             else:
                shoulder_hip = "Good"
 
          if nose is not None:
             nose_ear_dist = round(-(nose[1]-ear[1]), 4)
-            if nose_ear_dist > 1.5*unit:
+            if nose_ear_dist > 1*unit:
                nose_ear = "Tilt head down!"
-               self.head[0] += 1
-            elif nose_ear_dist < -1.5*unit:
+               if errored == False:
+                  self.head[0] += 1
+            elif nose_ear_dist < -2*unit:
                nose_ear = "Tilt head up!"
-               self.head[1] += 1
+               if errored == False:
+                  self.head[1] += 1
             else:
                nose_ear = "Good"
 
-      draw_text(img, 1, 1, f"Tick: {self.tick}", BLACK)
-      draw_text(img, 12, 1, unit_str, YELLOW)
-      draw_text(img, 1, 3, f"Nose-Ear {nose_ear} {nose_ear_dist}", BLACK)
+      self.tick += 1
+      if errored == False:
+         self.tock += 1
+
+      draw_text(img, 1, 1, f"Tick: {self.tick} Tock: {self.tock}", BLACK)
+      draw_text(img, 20, 1, unit_str, YELLOW)
+      draw_text(img, 1, 3, f"Nose-Ear {nose_ear}", BLACK)
       #draw_text(img, 1, 2, f"{nose_ear_dist}", YELLOW)
       draw_text(img, 1, 4, f"Too High: {self.head[0]} Too Low: {self.head[1]}", BLACK)
       draw_text(img, 1, 6, f"Ear-Shoulder {ear_shoulder}", BLACK)
@@ -299,9 +314,10 @@ class Node(AbstractNode):
       draw_text(img, 1, 11, f"Monitoring side: {watching}", BLACK)
 
       return {"Tick": self.tick,
+      "Tock": self.tock,
       "Head Angle High": self.head[0],
       "Head Angle Low": self.head[1],
       "Neck Angle Forward": self.neck[0],
       "Neck Angle Backward": self.neck[1],
       "Back Angle Forward": self.back[0],
-      "Back Angle Forward": self.back[1]}
+      "Back Angle Backward": self.back[1]}
