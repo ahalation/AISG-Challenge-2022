@@ -74,13 +74,12 @@ def draw_text(img, x, y, text_str: str, color_code):
    cv2.putText(
       img=img,
       text=text_str,
-      org=(x, y),
+      org=(5*x, 5*y),
       fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-      fontScale=0.4,
+      fontScale=1,
       color=color_code,
-      thickness=1,
+      thickness=2,
    )
-
 
 class Node(AbstractNode):
    #Custom node to display keypoints and check posture
@@ -261,6 +260,6 @@ class Node(AbstractNode):
       draw_text(img, 8, 45, f"Nose-Ear {nose_ear}", YELLOW)
       draw_text(img, 8, 55, f"Ear-Shoulder {ear_shoulder}", YELLOW)
       draw_text(img, 8, 65, f"Shoulder-Hip {shoulder_hip}", YELLOW)
-      draw_text(img, 8, 75, f"Monitoring side: {watching} {left_score} {right_score}]", WHITE)
+      draw_text(img, 8, 75, f"Monitoring side: {watching}", WHITE)
 
       return {}
