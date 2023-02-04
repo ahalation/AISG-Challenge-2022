@@ -11,6 +11,7 @@ FONT = cv2.FONT_HERSHEY_SIMPLEX
 WHITE = (255, 255, 255)       # opencv loads file in BGR format
 YELLOW = (0, 255, 255)
 RED = (0, 0, 255)
+BLACK = (0, 0, s0)
 THRESHOLD = 0.5               # ignore keypoints below this threshold
 KP_NOSE = 0                   # PoseNet's skeletal keypoints
 KP_RIGHT_EAR = 4
@@ -84,6 +85,12 @@ def draw_text(img, x, y, text_str: str, color_code):
 class Node(AbstractNode):
    #Custom node to display keypoints and check posture
 
+   def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
+      super().__init__(config, node_path=__name__, **kwargs)
+      # setup object working variables
+      self.tick = 0
+
+
    def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:  # type: ignore
       """This node draws keypoints and checks posture.
 
@@ -103,6 +110,8 @@ class Node(AbstractNode):
       keypoint_scores = inputs["keypoint_scores"]
 
       img_size = (img.shape[1], img.shape[0])  # image width, height
+
+      self.tick += 1
 
       # get bounding box confidence score and draw it at the
       # left-bottom (x1, y2) corner of the bounding box (offset by 30 pixels)
@@ -241,7 +250,7 @@ class Node(AbstractNode):
 
          if ear[0]-shoulder[0] < -1*unit:
             ear_shoulder = "Bend neck forward!"
-         elif ear[0]-shoulder[0] > 3*unit:
+         elif ear[0]-shoulder[0] > 2*unit:
             ear_shoulder = "Bend neck backward!"
          else:
             ear_shoulder = "Good"
@@ -255,9 +264,9 @@ class Node(AbstractNode):
                shoulder_hip = "Good"
 
          if nose is not None:
-            if -(nose[1]-ear[1]) < -3*unit:
+            if nose[1]-ear[1] > 2*unit:
                nose_ear = "Tilt head up!"
-            elif -(nose[1]-ear[1]) > 2*unit:
+            elif nose[1]-ear[1] < 2*unit:
                nose_ear = "Tilt head down!"
             else:
                nose_ear = "Good"
@@ -267,5 +276,6 @@ class Node(AbstractNode):
       draw_text(img, 1, 3, f"Ear-Shoulder {ear_shoulder}", YELLOW)
       draw_text(img, 1, 4, f"Shoulder-Hip {shoulder_hip}", YELLOW)
       draw_text(img, 1, 5, f"Monitoring side: {watching}", YELLOW)
+      draw_text(img, 1, 6, f"Time: {self.tick}", BLACK)
 
       return {}
