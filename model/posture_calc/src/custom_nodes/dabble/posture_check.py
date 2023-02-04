@@ -74,9 +74,9 @@ def draw_text(img, x, y, text_str: str, color_code):
    cv2.putText(
       img=img,
       text=text_str,
-      org=(5*x, 5*y),
+      org=(8*x, 24*y),
       fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-      fontScale=1,
+      fontScale=0.8,
       color=color_code,
       thickness=2,
    )
@@ -215,13 +215,13 @@ class Node(AbstractNode):
       shoulder_hip = None
 
       if nose is None:
-         draw_text(img, 8, 25, "Nose not found!", RED)
+         draw_text(img, 1, 6, "Nose not found!", RED)
       if ear is None:
-         draw_text(img, 8, 25, "Ear not found!", RED)
+         draw_text(img, 1, 7, "Ear not found!", RED)
       if shoulder is None:
-         draw_text(img, 8, 25, "Shoulder not found!", RED)
+         draw_text(img, 1, 8, "Shoulder not found!", RED)
       if hip is None:
-         draw_text(img, 8, 25, "Hip not found!", RED)
+         draw_text(img, 1, 9, "Hip not found!", RED)
 
       if shoulder is not None and ear is not None:
          unit = ((ear[0]-shoulder[0])**2+(shoulder[1]-ear[1])**2)**0.5/10
@@ -233,7 +233,7 @@ class Node(AbstractNode):
             else:
                torso_v = ((left_shoulder[0]-left_hip[0])**2+(left_shoulder[1]-left_hip[1])**2)**0.5
             if torso_h >= torso_v/4:
-               draw_text(img, 8, 15, "Camera angle incorrect!", RED)
+               draw_text(img, 8, 10, "Camera angle incorrect!", RED)
 
          if watching == "left":
             unit = -unit
@@ -256,10 +256,10 @@ class Node(AbstractNode):
             else:
                nose_ear = "Bad"
 
-      draw_text(img, 8, 35, unit_str, YELLOW)
-      draw_text(img, 8, 45, f"Nose-Ear {nose_ear}", YELLOW)
-      draw_text(img, 8, 55, f"Ear-Shoulder {ear_shoulder}", YELLOW)
-      draw_text(img, 8, 65, f"Shoulder-Hip {shoulder_hip}", YELLOW)
-      draw_text(img, 8, 75, f"Monitoring side: {watching}", WHITE)
+      draw_text(img, 1, 1, unit_str, YELLOW)
+      draw_text(img, 1, 2, f"Nose-Ear {nose_ear}", YELLOW)
+      draw_text(img, 1, 3, f"Ear-Shoulder {ear_shoulder}", YELLOW)
+      draw_text(img, 1, 4, f"Shoulder-Hip {shoulder_hip}", YELLOW)
+      draw_text(img, 1, 5, f"Monitoring side: {watching}", YELLOW)
 
       return {}
