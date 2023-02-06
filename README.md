@@ -150,6 +150,37 @@ python convert_logs.py
 
 #### 6. The converted records will be generated as text files of identical name as the origin log in the same directory.
 
+## Execute Pipeline (Mac)
+
+#### 1. Return to the model directory:
+```
+cd model
+```
+
+#### 2. If not already, enter the conda environment:
+```
+conda activate pkd
+```
+
+#### 3. Ensure your webcam is connected, then begin running the pipeline:
+```
+cd posture_calc
+peekingduck run
+```
+  > Note that this would work well with [Continuity Camera](https://support.apple.com/en-sg/HT213244) as long as your Mac is setup alongside an iPhone so that it can function as a webcam. 
+
+#### 4. Terminated session logs can be found in the output directory of the model:
+```
+/log/
+```
+
+#### 5. Convert the obtained logs to records for keeping track of your posture during the session:
+```
+python3 convert_logs.py
+```
+
+#### 6. The converted records will be generated as text files of identical name as the origin log in the same directory.
+
 ## Credits
 
 <!-- prettier-ignore-start -->
