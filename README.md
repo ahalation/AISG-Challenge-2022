@@ -7,11 +7,11 @@
 
 **How might we utilise Computer Vision (PeekingDuck) to aid the correction of poor posture among local students?**
 
-# Proposal: Posture Alert
+## Proposal: Posture Alert
 
 A tool that monitors the sitting posture of a subject positioned perpendicularly to a monitoring camera to estimate the user's sitting posture and alert when undesirable behaviour is detected (e.g. slouching)
 
-# Procedure: Model Iteration
+## Procedure: Model Iteration
 
 We created two pipelines to utilise CV to determine 'good' and 'bad' posture given a video input. The first,  `posture_detect`, used a custom trained inference model trained off images taken and classified by the contributors to the project. The resultant model was able to produce relatively accurate results when given images with the appropriate lighting and angle, but failed to give meaningful intepretation when fed a video feed.
 
@@ -149,3 +149,20 @@ python convert_logs.py
 ```
 
 #### 6. The converted records will be generated as text files of identical name as the origin log in the same directory.
+
+## Credits
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://twitter.com/ahalation"><img src="https://media.licdn.com/dms/image/C5603AQEttkXiu0ekWg/profile-displayphoto-shrink_800_800/0/1657711282858?e=1681344000&v=beta&t=fUlkxONrygQae3NfqF5U0cno96otjN8swqyEUdcjHPY" width="100px;" alt=""/><br /><sub><b>Miguel Ong (@ahalation)</b></sub></a><br /><a href="https://github.com/ahalation" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/cheng-nee-siew/"><img src="https://media.licdn.com/dms/image/D5603AQHaQWT_s_8lEw/profile-displayphoto-shrink_800_800/0/1663751899371?e=1681344000&v=beta&t=inlEcE7F7q24qxedoOu_kYsgQ54n8akHHEblcHYz9n8" width="100px;" alt=""/><br /><sub><b>Siew Cheng Nee</b></sub></a><br /><a href="https://github.com/cnjoanne" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/kiithy/"><img src="https://media.licdn.com/dms/image/C5603AQHQ9p6XyAlrhw/profile-displayphoto-shrink_800_800/0/1667980946239?e=1681344000&v=beta&t=Tl9-WK_xUVC5iqrqdPJOo5_0cAiSrQDZqs60R5oyfZU" width="100px;" alt=""/><br /><sub><b>Keith Chua</b></sub></a><br /><a href="https://github.com/kiithy" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/vidhimahajan/"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" width="100px;" alt=""/><br /><sub><b>Vidhi Mahajan</b></sub></a><br /><a href="https://github.com/cryingcoralclouds" title="Code">💻</a></td>
+    
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
