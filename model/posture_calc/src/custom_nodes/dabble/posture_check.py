@@ -326,8 +326,6 @@ class Node(AbstractNode):
       draw_text(img, 1, 10, f"Too Forward: {self.back[0]} Too Backward: {self.back[1]}", BLACK)
       draw_text(img, 1, 11, f"Monitoring side: {watching}", BLACK)
 
-      draw_text(img, 1, 20, f"{ear_shoulder_dist} {shoulder_hip_dist} {nose_ear_dist} {side}", RED)
-
       return {"Tick": self.tick,
       "Tock": self.tock,
       "Head Angle High": self.head[0],
