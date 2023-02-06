@@ -254,16 +254,23 @@ class Node(AbstractNode):
                draw_text(img, 1, 12, "Camera angle incorrect!", RED)
                errored = True
 
+         es = [[1.5, -1], [1, -1.5]]
+         sh = [[2, -3], [3, -2]]
+         ne = [[1, -2], [2, -1]]
+
          if watching == "left":
-            unit = -unit
+            side = 1
+         else:
+            side = 0
+
          unit_str = f"{round(unit, 4)}"
 
          ear_shoulder_dist = round(ear[0]-shoulder[0], 4)
-         if ear_shoulder_dist > 1.5*unit:
+         if ear_shoulder_dist > es[side][0]*unit:
             ear_shoulder = "Bend neck backward!"
             if errored == False:
                self.neck[0] += 1
-         elif ear_shoulder_dist < -1*unit:
+         elif ear_shoulder_dist < es[side][1]*unit:
             ear_shoulder = "Bend neck forward!"
             if errored == False:
                self.neck[1] += 1
@@ -272,11 +279,11 @@ class Node(AbstractNode):
 
          if hip is not None:
             shoulder_hip_dist = round(shoulder[0]-hip[0], 4)
-            if shoulder_hip_dist > 2*unit:
+            if shoulder_hip_dist > sh[side][0]*unit:
                shoulder_hip = "Sit backward!"
                if errored == False:
                   self.back[0] += 1
-            elif shoulder_hip_dist < -3*unit:
+            elif shoulder_hip_dist < sh[side][1]*unit:
                shoulder_hip = "Sit forward!"
                if errored == False:
                   self.back[1] += 1
@@ -285,11 +292,11 @@ class Node(AbstractNode):
 
          if nose is not None:
             nose_ear_dist = round(-(nose[1]-ear[1]), 4)
-            if nose_ear_dist > 1*unit:
+            if nose_ear_dist > ne[side][0]*unit:
                nose_ear = "Tilt head down!"
                if errored == False:
                   self.head[0] += 1
-            elif nose_ear_dist < -2*unit:
+            elif nose_ear_dist < ne[side][1]*unit:
                nose_ear = "Tilt head up!"
                if errored == False:
                   self.head[1] += 1
