@@ -11,6 +11,16 @@
 
 A tool that monitors the sitting posture of a subject positioned perpendicularly to a monitoring camera to estimate the user's sitting posture and alert when undesirable behaviour is detected (e.g. slouching)
 
+# Procedure: Model Iteration
+
+We created two pipelines to utilise CV to determine 'good' and 'bad' posture given a video input. The first,  `posture_detect`, used a custom trained inference model trained off images taken and classified by the contributors to the project. The resultant model was able to produce relatively accurate results when given images with the appropriate lighting and angle, but failed to give meaningful intepretation when fed a video feed.
+
+
+The second pipeline, `posture_calc`, builds on the inbuilt PoseNet model within PeekingDuck to relativistically determine with body lengths the posture of a user in a video feed. The feed returns live feedback and tracks positional status in terms of number of frames, which is then output to a csv file throughout the duration of the video feed. A helper python script then estimates the total time elapsed, as well as time spent in various postures, using frame intervals. The resultant data is then used to give a recommendation to the user as to which area of their body to pay more attention to to correct their posture effectively.
+
+
+The installation instructions will detail the installation of PeekingDuck and its prerequisites through a virtual environment after the download of this repository, as well as the execution of the inbuilt test pipeline.
+
 ## Installation (Windows)
 
 #### 1. Install Python 3.8:
