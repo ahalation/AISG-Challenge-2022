@@ -4,8 +4,10 @@ import os
 def time_sec(time):
     h, m, s = time.split(":")
     return int(h)*60*60 + int(m)*60 + int(s)
-
-log = os.getcwd() + "\\log\\"
+if os.name == "nt":
+    log = os.getcwd() + "\\log\\"
+else:
+    log = os.getcwd() + "/log/"
 first = None
 last = None
 
@@ -26,7 +28,7 @@ for f in os.listdir(log):
                     last = row
                     line += 1
         x = x.split("\\")[-1][:-4]
-        with open(log + x + ".txt", "w") as txt:
+        with open(x + ".txt", "w") as txt:
             if first == None or last == None or first == last:
                 txt.write("Input too short! Try taking another reading.")
             else:
