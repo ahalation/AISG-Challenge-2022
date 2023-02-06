@@ -130,7 +130,7 @@ peekingduck run
 
 #### 4. Terminated session logs can be found in the output directory of the model:
 ```
-/log
+/log/
 ```
 
 #### 5. Convert the obtained logs to records for keeping track of your posture during the session:
