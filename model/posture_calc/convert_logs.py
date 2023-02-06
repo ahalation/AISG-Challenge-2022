@@ -35,7 +35,7 @@ for f in os.listdir(log):
                 ft = time_sec(first[0]) - 10
                 lt = time_sec(last[0])
                 elapsed = lt-ft
-                txt.write(f"Time elapsed: {elapsed}s\n")
+                txt.write(f"Estimated time elapsed: {elapsed}s\n")
                 tick_s = round(elapsed/int(last[1]), 4)
                 tock = int(last[2])
                 tock_s = tock*tick_s
