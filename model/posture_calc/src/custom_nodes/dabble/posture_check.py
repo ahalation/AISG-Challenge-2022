@@ -227,6 +227,8 @@ class Node(AbstractNode):
       ear_shoulder_dist = None
       shoulder_hip_dist = None
       errored = False
+      side = None
+      opp = None
 
       if nose is None:
          draw_text(img, 1, 13, "Nose not found!", RED)
@@ -256,48 +258,52 @@ class Node(AbstractNode):
 
          es = [[1.5, -1], [1, -1.5]]
          sh = [[2, -3], [3, -2]]
-         ne = [[1, -2], [2, -1]]
+         ne = [[1, -2], [1, -2]]
+
+         str_es = ["Bend neck backward!", "Bend neck forward!"]
+         str_sh = ["Sit backward!", "Sit forward!"]
+         str_ne = ["Tilt head down!", "Tilt head up!"]
 
          if watching == "left":
-            side = 1
+            side, opp = 1, 0
          else:
-            side = 0
+            side, opp = 0, 1
 
-         unit_str = f"{round(unit, 4)}"
+         unit_str = f"{round(unit, 3)}"
 
-         ear_shoulder_dist = round(ear[0]-shoulder[0], 4)
+         ear_shoulder_dist = round(ear[0]-shoulder[0], 3)
          if ear_shoulder_dist > es[side][0]*unit:
-            ear_shoulder = "Bend neck backward!"
+            ear_shoulder = str_es[side]
             if errored == False:
                self.neck[0] += 1
          elif ear_shoulder_dist < es[side][1]*unit:
-            ear_shoulder = "Bend neck forward!"
+            ear_shoulder = str_es[opp]
             if errored == False:
                self.neck[1] += 1
          else:
             ear_shoulder = "Good"
 
          if hip is not None:
-            shoulder_hip_dist = round(shoulder[0]-hip[0], 4)
+            shoulder_hip_dist = round(shoulder[0]-hip[0], 3)
             if shoulder_hip_dist > sh[side][0]*unit:
-               shoulder_hip = "Sit backward!"
+               shoulder_hip = str_sh[side]
                if errored == False:
                   self.back[0] += 1
             elif shoulder_hip_dist < sh[side][1]*unit:
-               shoulder_hip = "Sit forward!"
+               shoulder_hip = str_sh[opp]
                if errored == False:
                   self.back[1] += 1
             else:
                shoulder_hip = "Good"
 
          if nose is not None:
-            nose_ear_dist = round(-(nose[1]-ear[1]), 4)
+            nose_ear_dist = round(-(nose[1]-ear[1]), 3)
             if nose_ear_dist > ne[side][0]*unit:
-               nose_ear = "Tilt head down!"
+               nose_ear = str_ne[0]
                if errored == False:
                   self.head[0] += 1
             elif nose_ear_dist < ne[side][1]*unit:
-               nose_ear = "Tilt head up!"
+               nose_ear = str_ne[1]
                if errored == False:
                   self.head[1] += 1
             else:
@@ -319,6 +325,8 @@ class Node(AbstractNode):
       #draw_text(img, 1, 8, f"{shoulder_hip_dist}", YELLOW)
       draw_text(img, 1, 10, f"Too Forward: {self.back[0]} Too Backward: {self.back[1]}", BLACK)
       draw_text(img, 1, 11, f"Monitoring side: {watching}", BLACK)
+
+      draw_text(img, 1, 20, f"{ear_shoulder_dist} {shoulder_hip_dist} {nose_ear_dist} {side}", RED)
 
       return {"Tick": self.tick,
       "Tock": self.tock,
